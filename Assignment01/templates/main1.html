@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Firestore basics</title>
+        <link type="text/css" href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet"/>
+    <script type="module" src="{{ url_for('static', path='/firebase-login.js') }}"></script>
+    </head>
+<body>
+    <div id="login-box" hidden="true">
+        Email :<input type="email" name="" id="email"><br/>
+        Password: <input type="password" name="" id="password"><br/>
+        <button id="login">Login</button>
+        <button id="sign-up">Sign Up</button>
+    </div>
+    <button id="sign-out" hidden="true">Sign out</button>
+
+
+
+        {% if user_token %}
+            <p>User email: {{ user_token.email }}</p>
+            <p>error message: {{ error_message }}</p>
+            <p>Name: {{ user_info.get('name') }}</p>
+
+            <a href="/add-EV">Add new EV car Details</a>
+
+            
+        {% endif %}
+    //filtering search options
+    <form action="/filter-by-name" method="post">
+        Search By Name : <input type="text" name="nameEV">
+        <input type="submit" />
+    </form>
+    <form action="/filter-by-manufact" method="post">
+        Search By manufacturer : <input type="text" name="manufact">
+        <input type="submit" />
+    </form>
+    <form action="/filter-by-year" method="post">
+        Filter by year
+        <input type="number" name="lowyear" value="0" />
+        <input type="number" name="highyear" value="0" />
+        <input type="submit" />
+    </form>
+    <form action="/filter-by-battery" method="post">
+        Filter by battery size
+        <input type="number" name="lowb" value="0" />
+        <input type="number" name="highb" value="0" />
+        <input type="submit" />
+    </form>
+    <form action="/filter-by-wltp" method="post">
+        Filter by WLTP Range
+        <input type="number" name="lowwltp" value="0" />
+        <input type="number" name="highwltp" value="0" />
+        <input type="submit" />
+    </form>
+    <form action="/filter-by-cost" method="post">
+        Filter by Cost Range
+        <input type="number" name="lowcost" value="0" />
+        <input type="number" name="highcost" value="0" />
+        <input type="submit" />
+    </form>
+    <form action="/filter-by-power" method="post">
+        Filter by power range
+        <input type="number" name="lowpower" value="0" />
+        <input type="number" name="highpower" value="0" />
+        <input type="submit" />
+    </form>
+
+
+        <p>EV list</p>
+            {% for evcar in ev_list %}
+                
+                Name : <a href="/view-ev?viewname={{evcar.get('name')}}">{{evcar.get('name')}}</a>
+
+                
+
+                
+            {% endfor %}
+
+    
+    <form action="/comparison" method="post">
+        <h4>Comparison</h4>
+        <label for="option1">Option 1:</label>
+    <select id="option1" name="option1">
+        {% for evcar in ev_list %}
+        <option value="{{evcar.get('name')}}">{{evcar.get('name')}}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <label for="option2">Option 2:</label>
+    <select id="option2" name="option2">
+        {% for evcar in ev_list %}
+        <option value="{{evcar.get('name')}}">{{evcar.get('name')}}</option>
+        {% endfor %}
+    </select>
+    <br>
+        <input type="submit" />
+    </form>
+
+        
+</body>
+</html>

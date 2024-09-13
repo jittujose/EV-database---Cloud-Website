@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Compare 2 EV</title>
+    <link type="text/css" href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet"/>
+    <script type="module" src="{{ url_for('static', path='/firebase-login.js') }}"></script>
+</head>
+<body style="text-align: center;">
+    <table style="width: 100%;">
+        <tr>
+            <td style="width: 50%; background-color: lightblue; vertical-align: middle;">
+                <table style="margin: auto;">
+                    <caption>EV 1</caption>
+                    
+                    
+                    <tr>
+                        <td>Name : <a href="/view-ev?viewname={{evcar1.get('name')}}">{{evcar1.get('name')}}</a></td>
+                    </tr>
+                    <tr>
+                        <td>Manufacturer: {{ evcar1.get('manufact') }}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {% if evcar1.get('year') < evcar2.get('year') %}
+                                <p style="color: red;">Year: {{ evcar1.get('year') }}</p>
+                            {% elif evcar1.get('year') > evcar2.get('year') %}
+                            <p style="color: green;"> Year: {{ evcar1.get('year') }}</p>
+                            {% else %}
+                            <p>  Year:{{ evcar1.get('year') }}</p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{% if evcar1.get('battery') < evcar2.get('battery') %}
+                            <p style="color: red;">Battery: {{ evcar1.get('battery') }} Kwh</p>
+                        {% elif evcar1.get('battery') > evcar2.get('battery') %}
+                        <p style="color: green;"> Battery: {{ evcar1.get('battery') }} Kwh</p>
+                        {% else %}
+                        <p>  Battery:{{ evcar1.get('battery') }} Kwh</p>
+                        {% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td>{% if evcar1.get('wltp') < evcar2.get('wltp') %}
+                            <p style="color: red;">WLTP: {{ evcar1.get('wltp') }} Km</p>
+                        {% elif evcar1.get('wltp') > evcar2.get('wltp') %}
+                        <p style="color: green;"> WLTP: {{ evcar1.get('wltp') }} Km</p>
+                        {% else %}
+                        <p>  WLTP:{{ evcar1.get('wltp') }} Km</p>
+                        {% endif %}</td>
+                    </tr>
+                    <tr>
+                        
+                        <td>{% if evcar1.get('cost') < evcar2.get('cost') %}
+                            <p style="color: green;">Cost: {{ evcar1.get('cost') }} <span>&#8364;</span></p>
+                        {% elif evcar1.get('cost') > evcar2.get('cost') %}
+                        <p style="color: red;"> Cost: {{ evcar1.get('cost') }} <span>&#8364;</span></p>
+                        {% else %}
+                        <p>  Cost:{{ evcar1.get('cost') }} <span>&#8364;</span></p>
+                        {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{% if evcar1.get('power') < evcar2.get('power') %}
+                            <p style="color: red;">Power: {{ evcar1.get('power') }} Kw</p>
+                        {% elif evcar1.get('power') > evcar2.get('power') %}
+                        <p style="color: green;"> Power: {{ evcar1.get('power') }} Kw</p>
+                        {% else %}
+                        <p>  Power:{{ evcar1.get('power') }} Kw</p>
+                        {% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td>{% if average1 < average2 %}
+                            <p style="color: red;">Average Rating: {{ average1 }}</p>
+                        {% elif average1 > average2 %}
+                        <p style="color: green;"> Average Rating: {{ average1 }}</p>
+                        {% else %}
+                        <p>  Average Rating: {{ average1 }}</p>
+                        {% endif %}</td>
+                    </tr>
+                </table>
+            </td>
+            <td style="width: 50%; background-color: lightyellow; vertical-align: middle;">
+                <table style="margin: auto;">
+                    <caption>EV 2</caption>
+                    
+                    <tr>
+                        <td>Name : <a href="/view-ev?viewname={{evcar2.get('name')}}">{{evcar2.get('name')}}</a></td>
+                    </tr>
+                    <tr>
+                        <td>Manufacturer: {{ evcar2.get('manufact') }}</td>
+                    </tr>
+                    <tr>
+                        <td>{% if evcar2.get('year') < evcar1.get('year') %}
+                            <p style="color: red;">Year: {{ evcar2.get('year') }}</p>
+                        {% elif evcar2.get('year') > evcar1.get('year') %}
+                        <p style="color: green;"> Year: {{ evcar2.get('year') }}</p>
+                        {% else %}
+                        <p>  Year:{{ evcar2.get('year') }}</p>
+                        {% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td>{% if evcar2.get('battery') < evcar1.get('battery') %}
+                            <p style="color: red;">Battery: {{ evcar2.get('battery') }} Kwh</p>
+                        {% elif evcar2.get('battery') > evcar1.get('battery') %}
+                        <p style="color: green;"> Battery: {{ evcar2.get('battery') }} Kwh</p>
+                        {% else %}
+                        <p>  Battery:{{ evcar2.get('battery') }} Kwh</p>
+                        {% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td>{% if evcar2.get('wltp') < evcar1.get('wltp') %}
+                            <p style="color: red;">WLTP Range: {{ evcar2.get('wltp') }} Km</p>
+                        {% elif evcar2.get('wltp') > evcar1.get('wltp') %}
+                        <p style="color: green;"> WLTP Range: {{ evcar2.get('wltp') }} Km</p>
+                        {% else %}
+                        <p>  WLTP Range:{{ evcar2.get('wltp') }} Km</p>
+                        {% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td>{% if evcar2.get('cost') < evcar1.get('cost') %}
+                            <p style="color: green;">Cost: {{ evcar2.get('cost') }} <span>&#8364;</span></p>
+                        {% elif evcar2.get('cost') > evcar1.get('cost') %}
+                        <p style="color: red;"> Cost: {{ evcar2.get('cost') }} <span>&#8364;</span></p>
+                        {% else %}
+                        <p>  Cost:{{ evcar2.get('cost') }} <span>&#8364;</span></p>
+                        {% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td>{% if evcar2.get('power') < evcar1.get('power') %}
+                            <p style="color: red;">Power: {{ evcar2.get('power') }} Kw</p>
+                        {% elif evcar2.get('power') > evcar1.get('power') %}
+                        <p style="color: green;"> Power: {{ evcar2.get('power') }} Kw</p>
+                        {% else %}
+                        <p>  Power:{{ evcar2.get('power') }} Kw</p>
+                        {% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td>{% if average2 < average1 %}
+                            <p style="color: red;">Average Rating: {{ average2 }}</p>
+                        {% elif average2 > average1 %}
+                        <p style="color: green;"> Average Rating: {{ average2 }}</p>
+                        {% else %}
+                        <p>  Average Rating: {{ average2 }}</p>
+                        {% endif %}</td>
+                    </tr>
+                    
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

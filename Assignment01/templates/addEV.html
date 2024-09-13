@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Firedtore basic</title>
+        <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet"/>
+        <script type="module" src="{{url_for('static', path='/firebase-login.js')}}"></script>
+    </head>
+    <body>
+        <div id="login-box" hidden="true">
+            Email:<input type="email" name="" id="email"><br>
+            Password:<input type="password" name="" id="password"><br>
+            <button id="login">Login</button>
+            <button id="sign-up">Sign Up</button>
+        </div>
+        <button id="sign-out" hidden="true">Sign out</button>
+
+        <!--kygdfky-->
+        {% if user_token %}
+            <p>User email: {{user_token.email }}</p>
+            <form action="/add-EV" method="post">
+                Name :<input type="text" name="name"/><br/>
+                manufacturer :<input type="text" name="manufact"/><br/>
+                year :<input type="number" name="year"/><br/>
+                battery :<input type="number" name="battery"/><br/>
+                WLTP Range :<input type="number" name="wltp"/><br/>
+                cost :<input type="number" name="cost"/><br/>
+                Power :<input type="number" name="power"/><br/>
+                <input type="submit" value="Add EV details">
+            </form>
+        {% endif %}
+    </body>
+</html>

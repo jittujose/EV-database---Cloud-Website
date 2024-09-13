@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>View Car</title>
+        <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet"/>
+        <script type="module" src="{{url_for('static', path='/firebase-login.js')}}"></script>
+    </head>
+    <body>
+        {% for evcar in ev_list %}
+
+        {% if not user_token %}
+                
+                Name :{{ evcar.get('name') }}<br/><br/>
+                manufacturer :{{ evcar.get('manufact') }}<br/> <br/>
+                year :{{ evcar.get('year') }}<br/> <br/>
+                battery :{{ evcar.get('battery') }} Kwh <br/> <br/>
+                WLTP Range :{{ evcar.get('wltp') }} Km<br/> <br/>
+                Cost: {{ evcar.get('cost') }} <span>&#8364;</span><br/> <br/>
+                Power: {{ evcar.get('power') }} Kw<br/> <br/>
+
+                Average Rating : {{ average }}<br/> <br/>
+                Reviews: <br/>
+                {% for eachev in evcar.get('review') %}
+                {{ eachev }} <br/>
+                {% endfor %}
+                <br/> <br/>
+                
+                Ratings:<br/>
+                {% for eachevr in evcar.get('rating') %}
+                {{ eachevr }} <br/>
+                {% endfor %}
+
+
+                {% endif %}
+                <br/><br/>
+                {% if user_token %}
+                <form action="/delete-ev" method="post">
+                    <input type="hidden" value="{{ evcar.get('name') }}" name="evname"/>
+                    <input type="submit" value="Delete EV"/>
+                </form>
+                <br/>
+
+        <form action="/edit-ev" method="post">
+            <input type="hidden" value="{{ evcar.get('name') }}" name="oldevname"/>
+            <input type="hidden" value = "{{evcar.get('review')}}" name="review"/>
+            <input type="hidden" value = "{{ evcar.get('rating')}}" name="rating"/>
+            Name :<input type="text" name="name" value="{{ evcar.get('name') }}"><br/> <br/>
+                manufacturer :<input type="text" name="manufact" value="{{ evcar.get('manufact') }}"><br/> <br/>
+                year :<input type="number" name="year" value="{{evcar.get('year')}}"/><br/> <br/>
+                battery :<input type="number" name="battery"  value="{{ evcar.get('battery') }}"/> Kwh<br/> <br/>
+                WLTP Range :<input type="number" name="wltp" value="{{ evcar.get('wltp') }}"/> Km<br/><br/>
+                cost :<input type="number" name="cost" value="{{ evcar.get('cost') }}"/> <span>&#8364;</span><br/> <br/>
+                Power :<input type="number" name="power"  value="{{ evcar.get('power') }}"/> Kw<br/> <br/>
+                
+            <input type="submit" value="Save Changes"/>
+        </form>
+        <br/> <br/>
+        Average Rating : {{ average }}<br/> <br/>
+        Reviews: <br/>
+                {% for eachev in evcar.get('review') %}
+                {{ eachev }} <br/>
+                {% endfor %}
+                <br/><br/>
+                Ratings: <br/>
+                {% for eachevr in evcar.get('rating') %}
+                {{ eachevr }} <br/>
+                {% endfor %}
+                <br/>
+        <h6>Add your Review and Rating</h6>
+        <form action="/review-ev" method="post">
+            <input type="hidden" value="{{ evcar.get('name') }}" name="oldname"/>
+            Review:
+            <textarea name="review" rows="4" cols="50" maxlength="1000"></textarea><br/>
+                        
+            <input type="submit" value="Submit review"/>
+        </form>
+        <br/><br/>
+        <form action="/rating-ev" method="post">
+            <input type="hidden" value="{{ evcar.get('name') }}" name="oldname"/>
+            Rating: 
+            <input type="number" name="rating" min="0" max="10" step="1" required><br/>
+                        
+            <input type="submit" value="Submit rating"/>
+        </form>
+        {% endif %}
+        {% endfor %}
+
+        
+        
+        
+        
+    </body>
+</html>
+
+

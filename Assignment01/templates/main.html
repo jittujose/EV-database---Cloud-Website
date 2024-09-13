@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Firestore Basics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        nav {
+            background-color: #444;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #login-box {
+            background-color: #fff;
+            width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #login-box input[type="email"],
+        #login-box input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        #login-box button {
+            width: 100%;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        #sign-out {
+            display: none;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 20px auto;
+        }
+
+        section {
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        form input[type="text"],
+        form input[type="number"] {
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        form input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer p {
+            margin: 0;
+        }
+        .add-ev-container {
+            text-align: center; /* Center align the content */
+            margin-top: 20px; /* Add some top margin for spacing */
+        }
+        .add-ev-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Green background */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .add-ev-link:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
+    <script type="module" src="{{ url_for('static', path='/firebase-login.js') }}"></script>
+</head>
+
+<body>
+
+    <header>
+        <h1>Electric Vehicles - The Future</h1>
+    </header>
+
+    <nav>
+        
+    </nav>
+
+    <div id="login-box">
+        <input type="email" name="" id="email" placeholder="Email"><br>
+        <input type="password" name="" id="password" placeholder="Password"><br>
+        <button id="login">Login</button>
+        <button id="sign-up">Sign Up</button>
+    </div>
+
+    <button id="sign-out">Sign out</button>
+
+    {% if user_token %}
+    <script>
+        document.getElementById("login-box").style.display = "none";
+        document.getElementById("sign-out").style.display = "block";
+    </script>
+    <p>User email: {{ user_token.email }}</p>
+    
+    <div class="add-ev-container">
+    <a href="/add-EV" class="add-ev-link">Add new EV car Details</a>
+    </div>
+    {% endif %}
+        <br/>
+    <!-- Button to toggle filtering options section -->
+    <button id="toggle-filtering">Click for Filtering Options</button>
+
+    <section id="filtering-section" style="display: none;">
+        <h2>Filtering Options</h2>
+        <form action="/filter-by-name" method="post">
+            Search By Name: <input type="text" name="nameEV">
+            <input type="submit" value="Search">
+        </form>
+        <form action="/filter-by-manufact" method="post">
+            Search By manufacturer : <input type="text" name="manufact">
+            <input type="submit" />
+        </form>
+        <form action="/filter-by-year" method="post">
+            Filter by year
+            <input type="number" name="lowyear" value="0" />
+            <input type="number" name="highyear" value="0" />
+            <input type="submit" />
+        </form>
+        <form action="/filter-by-battery" method="post">
+            Filter by battery size
+            <input type="number" name="lowb" value="0" />
+            <input type="number" name="highb" value="0" />
+            <input type="submit" />
+        </form>
+        <form action="/filter-by-wltp" method="post">
+            Filter by WLTP Range
+            <input type="number" name="lowwltp" value="0" />
+            <input type="number" name="highwltp" value="0" />
+            <input type="submit" />
+        </form>
+        <form action="/filter-by-cost" method="post">
+            Filter by Cost Range
+            <input type="number" name="lowcost" value="0" />
+            <input type="number" name="highcost" value="0" />
+            <input type="submit" />
+        </form>
+        <form action="/filter-by-power" method="post">
+            Filter by power range
+            <input type="number" name="lowpower" value="0" />
+            <input type="number" name="highpower" value="0" />
+            <input type="submit" />
+        </form>
+    
+    </section>
+
+    <section>
+        <h2>EV List</h2>
+        {% for evcar in ev_list %}
+        <p>Name: <a href="/view-ev?viewname={{ evcar.get('name') }}">{{ evcar.get('name') }}</a></p>
+        {% endfor %}
+    </section>
+
+    <section>
+        <h2>Comparison</h2>
+        <form action="/comparison" method="post">
+            <label for="option1">Option 1:</label>
+            <select id="option1" name="option1">
+                {% for evcar in ev_list %}
+                <option value="{{ evcar.get('name') }}">{{ evcar.get('name') }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <label for="option2">Option 2:</label>
+            <select id="option2" name="option2">
+                {% for evcar in ev_list %}
+                <option value="{{ evcar.get('name') }}">{{ evcar.get('name') }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <input type="submit" value="Compare">
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 My Website. All rights reserved.</p>
+    </footer>
+    <script>
+        document.getElementById("toggle-filtering").addEventListener("click", function() {
+            var filteringSection = document.getElementById("filtering-section");
+            if (filteringSection.style.display === "none") {
+                filteringSection.style.display = "block";
+            } else {
+                filteringSection.style.display = "none";
+            }
+        });
+    </script>
+
+</body>
+
+</html>
